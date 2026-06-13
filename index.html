@@ -76,19 +76,12 @@
     </script>
 </head>
 <body>
-    <div style="display:flex; align-items:center; gap:12px;">
-        <h1 id="welcomeUser">Welcome!</h1>
-        <button id="logoutBtn" class="nav-btn" style="width:auto;padding:8px 12px; background:white; color:rgb(152,13,13); border:1px solid rgb(152,13,13);">Logout</button>
-    </div>
+    <h1 id="welcomeUser">Welcome!</h1>
     <script>
         const name = localStorage.getItem('currentUser');
         if (name) {
             document.getElementById('welcomeUser').innerText = 'Welcome, ' + name + '!';
         }
-        document.getElementById('logoutBtn').addEventListener('click', function(){
-            try { localStorage.removeItem('currentUser'); console.log('index: logged out'); } catch(e){ console.error('index: logout error', e); }
-            window.location.replace('login.html');
-        });
     </script>
 
     <div class="content-box">

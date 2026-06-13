@@ -56,13 +56,14 @@
 
 <div class="quiz-card" id="quiz-box">
     <h2 id="question">Loading...</h2>
+    <p id="user-name" style="margin-bottom: 16px; color: #333; font-weight: bold;">Player: Anonymous</p>
     <div id="options"></div>
 </div>
 
 <div class="quiz-card hidden" id="result-box">
     <h2>Quiz Finished!</h2>
     <div id="score-display">0</div>
-    <p>Great Job!</p>
+    <p id="result-text">Great Job!</p>
     <a href="index.html" class="btn" style="text-decoration: none;">Back to Main Page</a>
 </div>
 
@@ -135,6 +136,12 @@
         if(score >= 12) confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
     }
 
+    function showUserName() {
+        let name = localStorage.getItem('currentUser') || 'Anonymous';
+        document.getElementById('user-name').innerText = 'Player: ' + name;
+    }
+
+    showUserName();
     loadQuestion();
 </script>
 
