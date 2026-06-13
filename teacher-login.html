@@ -19,6 +19,8 @@
         tr:nth-child(even) { background-color: #f9f9f9; }
         .btn-clear { margin-top: 20px; padding: 12px 25px; background: #dc3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .btn-clear:hover { background: #a71d2a; }
+        .delete-icon { cursor: pointer; color: #dc3545; font-size: 18px; border: none; background: transparent; }
+        .delete-icon:hover { color: #a71d2a; }
     </style>
 </head>
 <body>
@@ -35,6 +37,7 @@
                 <th>Activity Source</th>
                 <th>Date</th>
                 <th style="text-align: center;">Score</th>
+                <th style="width: 60px; text-align: center;">Action</th>
             </tr>
         </thead>
         <tbody id="tableBody">
@@ -62,6 +65,7 @@
                     <td>${student.activity}</td>
                     <td>${student.date}</td>
                     <td style="text-align: center;">${student.score}</td>
+                    <td style="text-align: center;"><button class="delete-icon" onclick="deleteRecord(${index})" title="Delete this record">🗑️</button></td>
                 `;
             });
         }
@@ -85,6 +89,14 @@
         let records = JSON.parse(localStorage.getItem('quizRecords') || "[]");
         let remaining = records.filter((_, index) => !selected.includes(index));
         localStorage.setItem('quizRecords', JSON.stringify(remaining));
+        loadRecords();
+    }
+
+    function deleteRecord(index) {
+        if (!confirm('Delete this record or keep it?')) return;
+        let records = JSON.parse(localStorage.getItem('quizRecords') || "[]");
+        records.splice(index, 1);
+        localStorage.setItem('quizRecords', JSON.stringify(records));
         loadRecords();
     }
 
