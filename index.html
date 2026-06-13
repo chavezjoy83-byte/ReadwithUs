@@ -1,93 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=login.html">
     <title>ReadwithUs</title>
-    <style>
-        body {
-            background-image: url("https://images.stockcake.com/public/c/d/a/cda0dc0a-97a1-489e-9dbe-268aaf096c9e_large/infinite-library-portal-stockcake.jpg");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        /* The brief background box with hover light */
-        .content-box {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
-            text-align: center;
-            transition: 0.4s;
-            border: 2px solid transparent;
-            margin-bottom: 30px;
-        }
-
-        .content-box:hover {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-            border: 2px solid rgb(152, 13, 13);
-        }
-
-        h1 {
-            color: rgb(152, 13, 13);
-            margin-top: 0;
-        }
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .nav-btn {
-            padding: 12px 30px;
-            font-size: 16px;
-            background-color: rgb(152, 13, 13);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 220px;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .nav-btn:hover {
-            background-color: white;
-            color: rgb(152, 13, 13);
-            box-shadow: 0 0 20px white;
-            transform: scale(1.05);
-        }
-    </style>
+    <script>
+        window.location.replace('login.html');
+    </script>
 </head>
 <body>
-    <h1 id="welcomeUser">Welcome!</h1>
-<script>
-    let name = localStorage.getItem('currentUser');
-    if (name) { document.getElementById('welcomeUser').innerText = "Welcome, " + name + "!"; }
-</script>
-
-    <div class="content-box">
-        <h1>ReadwithUs</h1>
-        <p>ReadwithUs is an interactive, web-based educational tool currently under development to support literacy and reading comprehension.</p>
-    </div>
-
-    <div class="button-container">
-        <a href="flashcards.html" class="nav-btn">Flashcard</a>
-        <a href="quiz.html" class="nav-btn">Drill</a>
-        <a href="lesson.html" class="nav-btn">Lesson Proper</a>
-        <a href="poem.html" class="nav-btn">Philippine Poem</a>
-        <a href="#" class="nav-btn">Group Activity</a>
-    </div>
-
+    <p>If you are not redirected automatically, <a href="login.html">click here to go to the login page</a>.</p>
 </body>
 </html>
