@@ -16,9 +16,9 @@
 <body>
     <div class="login-card">
         <h1>ReadwithUs</h1>
-        <input type="text" id="studentName" placeholder="Enter your name...">
+        <input type="text" id="studentName" placeholder="Enter your name (press Enter or click Sign In)..." autofocus onkeydown="if(event.key==='Enter'){ saveStudent(); }">
         <p id="status" style="color:#333; font-weight:600; margin-top:8px;"> </p>
-        <button class="btn" onclick="saveStudent()">Student Sign In</button>
+        <button type="button" class="btn" onclick="saveStudent()">Student Sign In</button>
         <p class="teacher-link" onclick="checkTeacher()">Teacher Access</p>
     </div>
 
