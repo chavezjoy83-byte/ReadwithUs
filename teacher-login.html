@@ -30,6 +30,7 @@
     <table id="studentTable">
         <thead>
             <tr>
+                <th style="width: 60px; text-align: center;">Select</th>
                 <th>Student Name</th>
                 <th>Activity Source</th>
                 <th>Date</th>
@@ -40,7 +41,8 @@
             </tbody>
     </table>
     
-    <button class="btn-clear" onclick="clearData()">Clear All Records</button>
+    <button class="btn-clear" onclick="deleteSelected()">Delete Selected Records</button>
+    <button class="btn-clear" onclick="clearData()" style="margin-left: 12px;">Clear All Records</button>
 </div>
 
 <script>
