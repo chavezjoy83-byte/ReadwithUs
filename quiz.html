@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ReadwithUs - Vocabulary Quiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { 
+            background: url("https://images.stockcake.com/public/c/d/a/cda0dc0a-97a1-489e-9dbe-268aaf096c9e_large/infinite-library-portal-stockcake.jpg") center/cover fixed; 
+            font-family: 'Segoe UI', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        
+        .quiz-card { 
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 40px; 
+            border-radius: 25px; 
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 10px rgba(255, 255, 255, 0.5); 
+            width: 450px; 
+        }
+
+        #score-display { font-size: 4rem; color: rgb(152, 13, 13); font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px rgba(152,13,13,0.3); }
+
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: white; 
+            color: rgb(152, 13, 13); 
+            border: 2px solid rgb(152, 13, 13); 
+            border-radius: 15px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+        }
+
+        .btn:hover { 
+            background: rgb(152, 13, 13); 
+            color: white; 
+            box-shadow: 0 0 15px rgba(152, 13, 13, 0.6); 
+            transform: scale(1.02); 
+        }
+
+        .correct { background: #28a745 !important; color: white !important; border-color: #28a745 !important; }
+        .wrong { background: #dc3545 !important; color: white !important; border-color: #dc3545 !important; }
+        .hidden { display: none; }
+        h2 { color: rgb(152, 13, 13); margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card" id="quiz-box">
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+</div>
+
+<div class="quiz-card hidden" id="result-box">
+    <h2>Quiz Finished!</h2>
+    <div id="score-display">0</div>
+    <p>Great Job!</p>
+    <a href="index.html" class="btn" style="text-decoration: none;">Back to Main Page</a>
+</div>
+
+<script>
+    const quizData = [
+        { word: "Lovely", options: ["Beautiful", "Ugly", "Small"], correct: "Beautiful" },
+        { word: "Beautiful", options: ["Pretty", "Old", "Slow"], correct: "Pretty" },
+        { word: "Nature", options: ["Buildings", "Environment", "Cars"], correct: "Environment" },
+        { word: "Lush", options: ["Dry", "Green growth", "Cold"], correct: "Green growth" },
+        { word: "Crystal clear", options: ["Transparent", "Dirty", "Hard"], correct: "Transparent" },
+        { word: "Country", options: ["Nation", "House", "Room"], correct: "Nation" },
+        { word: "Warm gestures", options: ["Friendly", "Anger", "Running"], correct: "Friendly" },
+        { word: "Celebration", options: ["Party", "Work", "Sleeping"], correct: "Party" },
+        { word: "Destroy", options: ["Build", "Ruin", "Fix"], correct: "Ruin" },
+        { word: "Recover", options: ["Get better", "Lose", "Cry"], correct: "Get better" },
+        { word: "Damages", options: ["Harm", "Health", "Food"], correct: "Harm" },
+        { word: "Diverse culture", options: ["Same", "Variety of traditions", "None"], correct: "Variety of traditions" },
+        { word: "Diverse place", options: ["Many features", "One thing", "Empty"], correct: "Many features" },
+        { word: "Locals", options: ["Tourists", "Residents", "Animals"], correct: "Residents" },
+        { word: "Geography", options: ["Study of Earth", "Math", "Cooking"], correct: "Study of Earth" }
+    ];
+
+    let current = 0, score = 0;
+
+    function loadQuestion() {
+        if(current < quizData.length) {
+            let q = quizData[current];
+            document.getElementById("question").innerText = "What is the meaning of: " + q.word + "?";
+            let optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            q.options.forEach(opt => {
+                let b = document.createElement("button");
+                b.className = "btn"; 
+                b.innerText = opt;
+                b.onclick = () => check(opt, b);
+                optionsDiv.appendChild(b);
+            });
+        } else {
+            showResult();
+        }
+    }
+
+    function check(choice, btn) {
+        if(choice === quizData[current].correct) { 
+            btn.className = "btn correct"; 
+            score++; 
+        } else { 
+            btn.className = "btn wrong"; 
+        }
+        
+        document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+        setTimeout(() => { current++; loadQuestion(); }, 600);
+    }
+
+    function showResult() {
+        document.getElementById("quiz-box").classList.add("hidden");
+        document.getElementById("result-box").classList.remove("hidden");
+        document.getElementById("score-display").innerText = score + "/" + quizData.length;
+        
+        // I-save sa localStorage kasama ang "Wayground Quiz" label
+        let records = JSON.parse(localStorage.getItem('quizRecords') || "[]");
+        records.push({
+            name: localStorage.getItem('currentUser') || "Anonymous",
+            activity: "Wayground Quiz", 
+            score: score + "/" + quizData.length, // Naka-format na score
+            date: new Date().toLocaleDateString()
+        });
+        localStorage.setItem('quizRecords', JSON.stringify(records));
+        
+        if(score >= 12) confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

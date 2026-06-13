@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Philippines Poem Activity</title>
+    <style>
+        :root { --bg: #1a1a1a; --accent: #ffb7b2; }
+        body { background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
+
+        .wrapper { position: relative; padding: 6px; border-radius: 26px; overflow: hidden; }
+        .wrapper::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--accent), transparent 30%);
+            animation: rotate 3s linear infinite; opacity: 0; transition: 0.5s;
+        }
+        .wrapper:hover::before { opacity: 1; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .container { position: relative; width: 600px; padding: 40px; border-radius: 20px; background: #2d2d2d; z-index: 1; text-align: center; }
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .active { display: block; }
+
+        .poem-text { background: #333; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left; border-left: 5px solid var(--accent); line-height: 1.8; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
+        .word { padding: 8px 15px; background: var(--accent); color: #1a1a1a; cursor: grab; border-radius: 5px; font-weight: bold; transition: 0.2s; }
+        .word:active { opacity: 0.6; }
+        .blank { border-bottom: 2px solid var(--accent); width: 110px; display: inline-block; min-height: 25px; color: #ffb7b2; font-weight: bold; margin: 2px 5px; text-align: center; border-radius: 4px; }
+        .blank.dragover { background: rgba(255,183,178,0.2); }
+        .blank.correct { background: rgba(120,255,120,0.25); border-color: #78ff78; color: #78ff78; }
+        .blank.wrong { background: rgba(255,100,100,0.25); border-color: #ff6464; color: #ff6464; }
+        .btn { padding: 10px 20px; background: var(--accent); border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 5px; }
+        #result12, #result34, #result5 { margin-top: 15px; font-weight: bold; min-height: 24px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="container" id="mainContainer">
+
+        <!-- LESSON -->
+        <div id="lesson" class="section active">
+            <h1>Lesson: Poetry Analysis</h1>
+            <p>Analyzing imagery and themes in literature.</p>
+            <p><b>Enter your name:</b></p>
+            <input type="text" id="studentName" placeholder="Your full name" style="padding:10px; border-radius:5px; border:none; width:80%; margin-bottom:10px;">
+            <br>
+            <button class="btn" onclick="startLesson()">Continue</button>
+            <br><br>
+            <a href="teacher-login.html" style="color: var(--accent); font-size: 0.9em;">Teacher Login &rarr;</a>
+        </div>
+
+        <!-- TITLE & AUTHOR -->
+        <div id="intro" class="section">
+            <h1>PHILIPPINES</h1>
+            <p>Written by: Ma. Jhanicah Allaizza Yumul Vergara</p>
+            <button class="btn" onclick="show('lesson')">Back</button>
+            <button class="btn" onclick="show('stanzas12')">Continue</button>
+        </div>
+
+        <!-- STANZAS 1 & 2 (reading) -->
+        <div id="stanzas12" class="section">
+            <h2>Stanza I & II</h2>
+            <div class="poem-text">
+                Oh how lovely are you, my country!<br>How beautiful are your nature,<br>The lush green trees and grass,<br>And the crystal clear waters;<br><br>
+                The people's smiles and warm gestures;<br>The delicious food that serves on the table;<br>The colorful celebration of each town.
+            </div>
+            <button class="btn" onclick="show('intro')">Back</button>
+            <button class="btn" onclick="show('stanzas34')">Continue</button>
+        </div>
+
+        <!-- STANZAS 3 & 4 (reading) -->
+        <div id="stanzas34" class="section">
+            <h2>Stanza III & IV</h2>
+            <div class="poem-text">
+                But what is happening to you?<br>The people destroy you, little by little<br>The nature is destroying you, little by little<br><br>
+                I wonder how will you recover?<br>From all the damages we've made;<br>My beloved Philippines, How lovely are you!
+            </div>
+            <button class="btn" onclick="show('stanzas12')">Back</button>
+            <button class="btn" onclick="show('stanza5')">Continue</button>
+        </div>
+
+        <!-- STANZA 5 (reading) -->
+        <div id="stanza5" class="section">
+            <h2>Stanza V</h2>
+            <div class="poem-text">Diverse culture, Diverse place<br>Many locals and diverse entities.<br>But despite the geography,<br>We still come together as one family.</div>
+            <button class="btn" onclick="show('stanzas34')">Back</button>
+            <button class="btn" onclick="show('getready')">Continue</button>
+        </div>
+
+        <!-- GET READY & INSTRUCTIONS -->
+        <div id="getready" class="section">
+            <h2>Get Ready!</h2>
+            <p><b>English:</b> Drag the correct word from the word bank into the matching blank to complete each stanza of the poem.</p>
+            <p><b>Tagalog:</b> I-drag ang tamang salita mula sa word bank patungo sa angkop na blangko upang mabuo ang bawat saknong ng tula.</p>
+            <button class="btn" onclick="show('stanza5')">Back</button>
+            <button class="btn" onclick="show('quiz12')">Start Quiz</button>
+        </div>
+
+        <!-- QUIZ: STANZA 1 & 2 (8 blanks) -->
+        <div id="quiz12" class="section">
+            <h2>Fill in the Blanks - Stanza I & II</h2>
+            <div class="word-bank" id="wb12"></div>
+            <div class="poem-text">
+                Oh how <span class="blank" data-answer="lovely" ondrop="drop(event)" ondragover="allow(event)"></span> are you, my <span class="blank" data-answer="country" ondrop="drop(event)" ondragover="allow(event)"></span>!<br>
+                How <span class="blank" data-answer="beautiful" ondrop="drop(event)" ondragover="allow(event)"></span> are your <span class="blank" data-answer="nature" ondrop="drop(event)" ondragover="allow(event)"></span>,<br>
+                The <span class="blank" data-answer="lush" ondrop="drop(event)" ondragover="allow(event)"></span> green trees and grass,<br>
+                And the <span class="blank" data-answer="crystal clear" ondrop="drop(event)" ondragover="allow(event)"></span> waters;<br><br>
+                The people's smiles and <span class="blank" data-answer="warm gestures" ondrop="drop(event)" ondragover="allow(event)"></span>;<br>
+                The delicious food that serves on the table;<br>
+                The colorful <span class="blank" data-answer="celebration" ondrop="drop(event)" ondragover="allow(event)"></span> of each town.
+            </div>
+            <button class="btn" onclick="checkAnswers('quiz12','result12','Philippines Poem - Stanza I & II')">Check Answers</button>
+            <div id="result12"></div>
+            <button class="btn" onclick="show('getready')">Back</button>
+            <button class="btn" onclick="show('quiz34')">Continue</button>
+        </div>
+
+        <!-- QUIZ: STANZA 3 & 4 (3 blanks) -->
+        <div id="quiz34" class="section">
+            <h2>Fill in the Blanks - Stanza III & IV</h2>
+            <div class="word-bank" id="wb34"></div>
+            <div class="poem-text">
+                But what is happening to you?<br>
+                The people <span class="blank" data-answer="destroy" ondrop="drop(event)" ondragover="allow(event)"></span> you, little by little<br>
+                The nature is destroying you, little by little<br><br>
+                I wonder how will you <span class="blank" data-answer="recover" ondrop="drop(event)" ondragover="allow(event)"></span>?<br>
+                From all the <span class="blank" data-answer="damages" ondrop="drop(event)" ondragover="allow(event)"></span> we've made;<br>
+                My beloved Philippines, How lovely are you!
+            </div>
+            <button class="btn" onclick="checkAnswers('quiz34','result34','Philippines Poem - Stanza III & IV')">Check Answers</button>
+            <div id="result34"></div>
+            <button class="btn" onclick="show('quiz12')">Back</button>
+            <button class="btn" onclick="show('quiz5')">Continue</button>
+        </div>
+
+        <!-- QUIZ: STANZA 5 (4 blanks) -->
+        <div id="quiz5" class="section">
+            <h2>Fill in the Blanks - Stanza V</h2>
+            <div class="word-bank" id="wb5"></div>
+            <div class="poem-text">
+                <span class="blank" data-answer="diverse culture" ondrop="drop(event)" ondragover="allow(event)"></span>, <span class="blank" data-answer="diverse place" ondrop="drop(event)" ondragover="allow(event)"></span><br>
+                Many <span class="blank" data-answer="locals" ondrop="drop(event)" ondragover="allow(event)"></span> and diverse entities.<br>
+                But despite the <span class="blank" data-answer="geography" ondrop="drop(event)" ondragover="allow(event)"></span>,<br>
+                We still come together as one family.
+            </div>
+            <button class="btn" onclick="checkAnswers('quiz5','result5','Philippines Poem - Stanza V')">Check Answers</button>
+            <div id="result5"></div>
+            <button class="btn" onclick="show('quiz34')">Back</button>
+            <button class="btn" onclick="location.reload()">Home</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const wordSets = {
+        wb12: ["Lovely", "country", "beautiful", "nature", "lush", "crystal clear", "warm gestures", "celebration"],
+        wb34: ["destroy", "recover", "damages"],
+        wb5:  ["diverse culture", "diverse place", "locals", "geography"]
+    };
+
+    let studentName = "Anonymous";
+
+    function startLesson() {
+        const val = document.getElementById('studentName').value.trim();
+        if (val) studentName = val;
+        show('intro');
+    }
+
+    function saveScore(activity, score, total) {
+        let records = JSON.parse(localStorage.getItem('quizRecords') || "[]");
+        records.push({
+            name: studentName,
+            activity: activity,
+            date: new Date().toLocaleString(),
+            score: score + " / " + total
+        });
+        localStorage.setItem('quizRecords', JSON.stringify(records));
+    }
+
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function show(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function allow(e) {
+        e.preventDefault();
+        e.target.classList.add('dragover');
+    }
+
+    function drag(e) { e.dataTransfer.setData('text', e.target.innerText); }
+
+    function drop(e) {
+        e.preventDefault();
+        e.target.classList.remove('dragover');
+        const word = e.dataTransfer.getData("text");
+
+        // if this blank already had a word, restore that chip
+        if (e.target.dataset.usedWord) {
+            restoreChip(e.target.dataset.usedWord);
+        }
+
+        e.target.innerText = word;
+        e.target.dataset.usedWord = word;
+        e.target.classList.remove('correct', 'wrong');
+
+        // hide the dragged chip
+        const chip = document.querySelector('.word[data-used="false"][data-word="' + cssEscape(word) + '"]');
+        if (chip) { chip.setAttribute('data-used', 'true'); chip.style.display = 'none'; }
+    }
+
+    function restoreChip(word) {
+        const chip = document.querySelector('.word[data-word="' + cssEscape(word) + '"][data-used="true"]');
+        if (chip) { chip.setAttribute('data-used', 'false'); chip.style.display = 'inline-block'; }
+    }
+
+    function cssEscape(str) {
+        return str.replace(/(["\\])/g, '\\$1');
+    }
+
+    function checkAnswers(sectionId, resultId, activityName) {
+        const blanks = document.querySelectorAll('#' + sectionId + ' .blank');
+        let correct = 0;
+        blanks.forEach(b => {
+            const given = (b.innerText || "").trim().toLowerCase();
+            const expected = b.dataset.answer.toLowerCase();
+            b.classList.remove('correct', 'wrong');
+            if (given === expected) {
+                b.classList.add('correct');
+                correct++;
+            } else {
+                b.classList.add('wrong');
+            }
+        });
+        const result = document.getElementById(resultId);
+        result.innerText = "Score: " + correct + " / " + blanks.length + (correct === blanks.length ? "  🎉 Perfect!" : "  Try again!");
+        result.style.color = correct === blanks.length ? '#78ff78' : '#ff6464';
+        saveScore(activityName, correct, blanks.length);
+    }
+
+    window.onload = () => {
+        for (const bankId in wordSets) {
+            const wb = document.getElementById(bankId);
+            shuffle(wordSets[bankId]).forEach(w => {
+                let div = document.createElement('div');
+                div.className = 'word';
+                div.draggable = true;
+                div.innerText = w;
+                div.dataset.word = w;
+                div.dataset.used = "false";
+                div.ondragstart = drag;
+                wb.appendChild(div);
+            });
+        }
+    }
+</script>
+</body>
+</html>
