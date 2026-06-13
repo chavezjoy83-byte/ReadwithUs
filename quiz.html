@@ -56,7 +56,14 @@
 
 <div class="quiz-card" id="quiz-box">
     <h2 id="question">Loading...</h2>
-    <p id="user-name" style="margin-bottom: 16px; color: #333; font-weight: bold;">Player: Anonymous</p>
+    <div style="margin-bottom:16px;">
+        <span id="user-name" style="color:#333; font-weight:bold;">Player: Anonymous</span>
+        <button id="edit-name-btn" class="btn" style="display:inline-block; width:auto; margin-left:8px; padding:6px 10px; font-size:14px;">Edit</button>
+        <div id="name-edit" style="display:none; margin-top:8px;">
+            <input id="name-input" type="text" placeholder="Enter name" style="padding:8px; border-radius:8px; width:220px;"> 
+            <button id="save-name" class="btn" style="width:auto; display:inline-block; padding:8px 12px; margin-left:8px;">Save</button>
+        </div>
+    </div>
     <div id="options"></div>
 </div>
 
@@ -126,9 +133,9 @@
         // I-save sa localStorage kasama ang "Wayground Quiz" label
         let records = JSON.parse(localStorage.getItem('quizRecords') || "[]");
         records.push({
-            name: localStorage.getItem('currentUser') || "Anonymous",
-            activity: "Wayground Quiz", 
-            score: score + "/" + quizData.length, // Naka-format na score
+            name: localStorage.getItem('currentUser') || document.getElementById('name-input').value || "Anonymous",
+            activity: "Wayground Quiz",
+            score: score + "/" + quizData.length,
             date: new Date().toLocaleDateString()
         });
         localStorage.setItem('quizRecords', JSON.stringify(records));
@@ -139,6 +146,25 @@
     function showUserName() {
         let name = localStorage.getItem('currentUser') || 'Anonymous';
         document.getElementById('user-name').innerText = 'Player: ' + name;
+        document.getElementById('name-input').value = name === 'Anonymous' ? '' : name;
+    }
+
+    // Name edit handlers
+    document.getElementById('edit-name-btn').addEventListener('click', () => {
+        document.getElementById('name-edit').style.display = 'block';
+        document.getElementById('name-input').focus();
+    });
+
+    document.getElementById('save-name').addEventListener('click', () => {
+        let v = (document.getElementById('name-input').value || '').trim();
+        if (v) {
+            localStorage.setItem('currentUser', v);
+            document.getElementById('user-name').innerText = 'Player: ' + v;
+            document.getElementById('name-edit').style.display = 'none';
+        } else {
+            alert('Please enter a name');
+        }
+    });
     }
 
     showUserName();
