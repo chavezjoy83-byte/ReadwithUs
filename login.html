@@ -17,32 +17,55 @@
     <div class="login-card">
         <h1>ReadwithUs</h1>
         <input type="text" id="studentName" placeholder="Enter your name...">
-        
+        <p id="status" style="color:#333; font-weight:600; margin-top:8px;"> </p>
         <button class="btn" onclick="saveStudent()">Student Sign In</button>
-        
         <p class="teacher-link" onclick="checkTeacher()">Teacher Access</p>
     </div>
 
     <script>
         function saveStudent() {
-            let name = document.getElementById('studentName').value;
-            if (name.trim() !== "") {
+            let input = document.getElementById('studentName');
+            let name = (input.value || '').trim();
+            if (name === '') {
+                alert('Please enter your name!');
+                input.focus();
+                return;
+            }
+            try {
                 localStorage.setItem('currentUser', name);
-                // SIGURADUHIN na may file ka na index.html sa parehong folder!
-                window.location.href = "index.html"; 
-            } else { 
-                alert("Please enter your name!"); 
+                document.getElementById('status').innerText = 'Signed in as: ' + name;
+                // use replace so back button won't return to login
+                window.location.replace('index.html');
+            } catch (err) {
+                alert('Could not save name to localStorage: ' + err.message);
             }
         }
 
         function checkTeacher() {
-            let pass = prompt("Enter Teacher Access Code:");
-            if (pass === "admin123") { 
-                window.location.href = "teacher-login.html"; 
-            } else { 
-                alert("Invalid Code!"); 
+            let pass = prompt('Enter Teacher Access Code:');
+            if (pass === 'admin123') {
+                window.location.href = 'teacher-login.html';
+            } else {
+                alert('Invalid Code!');
             }
         }
+
+        // show existing saved name (if any) so user can confirm
+        function showSavedName() {
+            try {
+                let name = localStorage.getItem('currentUser');
+                if (name) {
+                    document.getElementById('studentName').value = name;
+                    document.getElementById('status').innerText = 'Signed in as: ' + name;
+                } else {
+                    document.getElementById('status').innerText = '';
+                }
+            } catch (e) {
+                document.getElementById('status').innerText = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', showSavedName);
     </script>
 </body>
 </html>
