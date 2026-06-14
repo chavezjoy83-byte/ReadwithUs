@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#961313">
+    <meta name="description" content="A mobile-friendly poetry and vocabulary lesson.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>ReadwithUs - Poetry & Vocab Lesson</title>
     <style>
         body { 
@@ -10,11 +17,15 @@
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center; 
             min-height: 100vh; margin: 0; color: #e9ecef;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .main-wrapper {
-            display: flex; gap: 30px; align-items: stretch; justify-content: center;
+            display: flex; flex-wrap: wrap; gap: 30px; align-items: stretch; justify-content: center;
             max-width: 950px; padding: 20px;
+            width: min(100%, 950px);
+            box-sizing: border-box;
         }
 
         /* Container na may umiikot na ilaw */
@@ -22,9 +33,10 @@
             position: relative;
             background: #1a1a2e;
             border-radius: 25px;
-            padding: 40px;
+            padding: 34px;
             overflow: hidden;
-            width: 400px;
+            width: min(100%, 440px);
+            box-sizing: border-box;
         }
 
         /* Ito ang effect na umiikot na ilaw */
@@ -52,12 +64,20 @@
             100% { transform: rotate(360deg); }
         }
 
-        .btn { padding: 12px 25px; background: #6c5ce7; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s; }
+        .btn { padding: 12px 25px; background: #6c5ce7; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin: 8px auto; transition: 0.3s; width: min(100%, 240px); display: block; box-sizing: border-box; }
         .btn:hover { background: #5a4ad1; }
         
+        .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: min(100%, 560px); margin: 0 auto 20px; }
         h2 { color: #ffffff; margin-top: 5px; }
-        .category { font-weight: 800; color: #a29bfe; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 2px; }
-        #full-example { font-style: italic; color: #cfcfcf; line-height: 1.8; white-space: pre-line; }
+        .category { font-weight: 800; color: #a29bfe; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; }
+        #full-example { font-style: italic; color: #cfcfcf; line-height: 1.8; white-space: pre-line; margin: 0; }
+        @media (max-width: 760px) {
+            body { padding: 16px; }
+            .main-wrapper { flex-direction: column; padding: 12px; gap: 18px; }
+            .glow-box { width: 100%; padding: 22px; }
+            .btn { width: 100%; max-width: 100%; }
+            .controls { width: 100%; gap: 10px; }
+        }
     </style>
 </head>
 <body>

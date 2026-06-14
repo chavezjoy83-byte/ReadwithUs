@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#961313">
+    <meta name="description" content="An interactive poem reading and comprehension activity optimized for mobile.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Philippines Poem Activity</title>
     <style>
         :root { --bg: #1a1a1a; --accent: #ffb7b2; }
-        body { background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
+        body { background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; padding: 20px; box-sizing: border-box; }
 
-        .wrapper { position: relative; padding: 6px; border-radius: 26px; overflow: hidden; }
+        .wrapper { position: relative; padding: 6px; border-radius: 26px; overflow: hidden; width: min(100%, 640px); }
         .wrapper::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: conic-gradient(transparent, var(--accent), transparent 30%);
@@ -16,33 +23,47 @@
         .wrapper:hover::before { opacity: 1; }
         @keyframes rotate { 100% { transform: rotate(360deg); } }
 
-        .container { position: relative; width: 600px; padding: 40px; border-radius: 20px; background: #2d2d2d; z-index: 1; text-align: center; }
+        .container { position: relative; width: 100%; padding: 40px; border-radius: 20px; background: #2d2d2d; z-index: 1; text-align: center; box-sizing: border-box; }
         .section { display: none; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .active { display: block; }
 
-        .poem-text { background: #333; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left; border-left: 5px solid var(--accent); line-height: 1.8; }
-        .audio-btn { padding: 6px 10px; font-size: 0.9em; margin-top: 8px; }
+        .poem-text { background: #333; padding: 18px; border-radius: 10px; margin: 16px 0; text-align: left; border-left: 5px solid var(--accent); line-height: 1.8; font-size: 1rem; }
+        .audio-btn { padding: 6px 10px; font-size: 0.95rem; margin-top: 4px; }
         .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
-        .word { padding: 8px 15px; background: var(--accent); color: #1a1a1a; cursor: grab; border-radius: 5px; font-weight: bold; transition: 0.2s; }
+        .word { padding: 10px 14px; background: var(--accent); color: #1a1a1a; cursor: grab; border-radius: 6px; font-weight: bold; transition: 0.2s; min-width: 90px; text-align: center; }
         .word:active { opacity: 0.6; }
-        .blank { border-bottom: 2px solid var(--accent); width: 110px; display: inline-block; min-height: 25px; color: #ffb7b2; font-weight: bold; margin: 2px 5px; text-align: center; border-radius: 4px; }
+        .blank { border-bottom: 2px solid var(--accent); display: inline-block; min-width: 90px; max-width: 140px; min-height: 28px; color: #ffb7b2; font-weight: bold; margin: 4px 4px; padding: 2px 6px; text-align: center; border-radius: 4px; word-break: break-word; }
         .blank.dragover { background: rgba(255,183,178,0.2); }
         .blank.correct { background: rgba(120,255,120,0.25); border-color: #78ff78; color: #78ff78; }
         .blank.wrong { background: rgba(255,100,100,0.25); border-color: #ff6464; color: #ff6464; }
         .picture-container { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-        .picture-row { display: flex; align-items: center; gap: 10px; background: #333; padding: 8px; border-radius: 12px; }
-        .picture-image { width: 120px; min-width: 120px; height: 76px; overflow: hidden; border-radius: 12px; border: 2px solid #fff; }
+        .picture-row { display: flex; align-items: center; gap: 10px; background: #333; padding: 10px; border-radius: 12px; flex-wrap: wrap; }
+        .picture-image { width: 120px; min-width: 120px; height: 76px; overflow: hidden; border-radius: 12px; border: 2px solid #fff; flex-shrink: 0; }
         .picture-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .picture-arrow { position: relative; width: 34px; display: flex; align-items: center; justify-content: center; color: var(--accent); }
         .picture-arrow::before { content: ''; position: absolute; width: 2px; height: 70%; background: var(--accent); top: 15%; left: 50%; transform: translateX(-50%); }
         .picture-arrow::after { content: '→'; position: relative; font-size: 18px; z-index: 1; }
-        .picture-target { flex: 1; display: flex; align-items: center; justify-content: center; height: 76px; border: 2px dashed var(--accent); border-radius: 12px; background: rgba(255,183,178,0.05); }
+        .picture-target { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 80px; border: 2px dashed var(--accent); border-radius: 12px; background: rgba(255,183,178,0.05); padding: 10px; box-sizing: border-box; }
         .picture-target.correct { border-color: #78ff78; background: rgba(120,255,120,0.12); color: #78ff78; }
         .picture-target.wrong { border-color: #ff6464; background: rgba(255,100,100,0.12); color: #ff6464; }
         .hidden { display: none; }
-        .btn { padding: 10px 20px; background: var(--accent); border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 5px; }
+        .btn { padding: 10px 16px; background: var(--accent); border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 8px 4px; font-size: 0.98rem; min-width: 140px; transition: 0.25s; }
+        .btn:hover { opacity: 0.95; }
+        input[type="file"].hidden-file { display: none; }
+        .btn + .btn { margin-left: 6px; }
+        .section .btn { margin-top: 8px; }
         #result12, #result34, #result5 { margin-top: 15px; font-weight: bold; min-height: 24px; }
+        @media (max-width: 760px) {
+            body { padding: 16px; }
+            .wrapper { width: 100%; }
+            .container { padding: 24px; }
+            .picture-row { flex-direction: column; align-items: stretch; }
+            .picture-image, .picture-target { width: 100%; min-width: unset; }
+            .picture-arrow { display: none; }
+            .btn { width: 100%; margin-left: 0; max-width: 100%; }
+            input[type="text"] { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -66,11 +87,8 @@
         <div id="intro" class="section">
             <h1>PHILIPPINES</h1>
             <p>Written by: Ma. Jhanicah Allaizza Yumul Vergara</p>
-            <button id="btnAudioTitle" class="btn audio-btn" onclick="toggleAudio('audioTitle')">Play Title Audio</button>
-                <audio id="audioTitle" preload="metadata" controls>
-                    <source src="title.mp3" type="audio/mpeg">
-                </audio>
-            <button class="btn" onclick="show('lesson')">Back</button>
+                    
+                    <button class="btn" onclick="show('lesson')">Back</button>
             <button class="btn" onclick="show('stanzas12')">Continue</button>
         </div>
 
@@ -81,10 +99,7 @@
                 Oh how lovely are you, my country!<br>How beautiful are your nature,<br>The lush green trees and grass,<br>And the crystal clear waters;<br><br>
                 The people's smiles and warm gestures;<br>The delicious food that serves on the table;<br>The colorful celebration of each town.
             </div>
-            <button id="btnAudio12" class="btn audio-btn" onclick="toggleAudio('audio12')">Play Audio</button>
-                <audio id="audio12" preload="metadata" controls>
-                    <source src="stanza12.mp3" type="audio/mpeg">
-                </audio>
+                
             <button class="btn" onclick="show('intro')">Back</button>
             <button class="btn" onclick="show('stanzas34')">Continue</button>
         </div>
@@ -96,10 +111,7 @@
                 But what is happening to you?<br>The people destroy you, little by little<br>The nature is destroying you, little by little<br><br>
                 I wonder how will you recover?<br>From all the damages we've made;<br>My beloved Philippines, How lovely are you!
             </div>
-            <button id="btnAudio34" class="btn audio-btn" onclick="toggleAudio('audio34')">Play Audio</button>
-                <audio id="audio34" preload="metadata" controls>
-                    <source src="stanza34.mp3" type="audio/mpeg">
-                </audio>
+                
             <button class="btn" onclick="show('stanzas12')">Back</button>
             <button class="btn" onclick="show('stanza5')">Continue</button>
         </div>
@@ -108,10 +120,7 @@
         <div id="stanza5" class="section">
             <h2>Stanza V</h2>
             <div class="poem-text">Diverse culture, Diverse place<br>Many locals and diverse entities.<br>But despite the geography,<br>We still come together as one family.</div>
-            <button id="btnAudio5" class="btn audio-btn" onclick="toggleAudio('audio5')">Play Audio</button>
-                <audio id="audio5" preload="metadata" controls>
-                    <source src="stanza5.mp3" type="audio/mpeg">
-                </audio>
+                
             <button class="btn" onclick="show('stanzas34')">Back</button>
             <button class="btn" onclick="show('getready')">Continue</button>
         </div>
@@ -355,22 +364,7 @@
         document.getElementById('homeLink').classList.remove('hidden');
     }
 
-    function toggleAudio(id) {
-        const audio = document.getElementById(id);
-        const btnId = 'btn' + id.replace('audio', 'Audio');
-        const btn = document.getElementById(btnId);
-        if (!audio) return;
-        if (audio.paused) {
-            // pause others
-            document.querySelectorAll('audio').forEach(a => { if (!a.paused) { a.pause(); a.currentTime = 0; const otherBtn = document.getElementById('btn' + a.id.replace('audio','Audio')); if (otherBtn) otherBtn.innerText = 'Play Audio'; } });
-            audio.play().catch(err => { console.error('Audio play error', err); alert('Audio play failed: ' + (err && err.message ? err.message : err)); });
-            if (btn) btn.innerText = 'Pause Audio';
-        } else {
-            audio.pause();
-            audio.currentTime = 0;
-            if (btn) btn.innerText = 'Play Audio';
-        }
-    }
+    
 
     window.onload = () => {
         buildPictureMatch();
@@ -388,16 +382,29 @@
                 wb.appendChild(div);
             });
         }
-        // audio button setup: hide if audio file missing, update text on play/pause
+        // audio debug: log file URLs and play ability
         document.querySelectorAll('audio').forEach(a => {
-            const btnId = 'btn' + a.id.replace('audio', 'Audio');
-            const btn = document.getElementById(btnId);
-            if (!btn) return;
-            a.addEventListener('error', () => { btn.classList.add('hidden'); });
-            a.addEventListener('play', () => { btn.innerText = 'Pause Audio'; });
-            a.addEventListener('pause', () => { btn.innerText = 'Play Audio'; a.currentTime = 0; });
-            a.addEventListener('ended', () => { btn.innerText = 'Play Audio'; a.currentTime = 0; });
+            a.addEventListener('error', () => { console.error('Audio load failed for', a.id, 'src=', a.currentSrc || a.src); });
             console.log('Audio', a.id, 'src=', a.currentSrc || a.src, 'canPlayType(mpeg)=', a.canPlayType('audio/mpeg'));
+        });
+    }
+</script>
+<script>
+    let deferredPrompt;
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
+        });
+    }
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+    function promptInstall() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function() {
+            deferredPrompt = null;
         });
     }
 </script>

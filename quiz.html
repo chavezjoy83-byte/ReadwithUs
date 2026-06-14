@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#961313">
+    <meta name="description" content="A mobile-friendly vocabulary quiz for ReadwithUs.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>ReadwithUs - Vocabulary Quiz</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { 
-            background: url("https://images.stockcake.com/public/c/d/a/cda0dc0a-97a1-489e-9dbe-268aaf096c9e_large/infinite-library-portal-stockcake.jpg") center/cover fixed; 
+            background: url("https://images.stockcake.com/public/c/d/a/cda0dc0a-97a1-489e-9dbe-268aaf096c9e_large/infinite-library-portal-stockcake.jpg") center/cover scroll; 
             font-family: 'Segoe UI', sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh; 
+            min-height: 100vh; 
             margin: 0; 
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         .quiz-card { 
@@ -20,10 +30,13 @@
             border-radius: 25px; 
             text-align: center; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 10px rgba(255, 255, 255, 0.5); 
-            width: 450px; 
+            width: min(100%, 450px); 
+            max-width: 100%;
+            margin: 20px;
+            box-sizing: border-box;
         }
 
-        #score-display { font-size: 4rem; color: rgb(152, 13, 13); font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px rgba(152,13,13,0.3); }
+        #score-display { font-size: clamp(2.5rem, 8vw, 4rem); color: rgb(152, 13, 13); font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px rgba(152,13,13,0.3); }
 
         .btn { 
             display: block; 
@@ -37,6 +50,7 @@
             font-weight: bold; 
             cursor: pointer; 
             transition: all 0.3s ease; 
+            box-sizing: border-box;
         }
 
         .btn:hover { 
@@ -49,7 +63,12 @@
         .correct { background: #28a745 !important; color: white !important; border-color: #28a745 !important; }
         .wrong { background: #dc3545 !important; color: white !important; border-color: #dc3545 !important; }
         .hidden { display: none; }
-        h2 { color: rgb(152, 13, 13); margin-bottom: 25px; }
+        h2 { color: rgb(152, 13, 13); margin-bottom: 20px; word-break: break-word; }
+
+        @media (max-width: 760px) {
+            body { padding: 18px; align-items: flex-start; }
+            .quiz-card { padding: 24px; margin: 12px 0; }
+        }
     </style>
 </head>
 <body>

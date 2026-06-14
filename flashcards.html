@@ -1,46 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#961313">
+    <meta name="description" content="A mobile-friendly flashcard activity for ReadwithUs.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Flashcards - ReadwithUs</title>
     <style>
         body {
             background-image: url("https://images.stockcake.com/public/c/d/a/cda0dc0a-97a1-489e-9dbe-268aaf096c9e_large/infinite-library-portal-stockcake.jpg");
             background-size: cover;
-            background-attachment: fixed;
+            background-attachment: scroll;
             font-family: Arial, sans-serif;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            padding: 50px;
+            padding: 20px;
             margin: 0;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         .back-link {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 16px;
+            left: 16px;
             background: rgb(152, 13, 13);
             color: white;
-            padding: 10px 20px;
+            padding: 12px 18px;
             border-radius: 20px;
             text-decoration: none;
             font-weight: bold;
             z-index: 1000;
             border: 2px solid white;
+            box-sizing: border-box;
         }
 
         .flip-card {
             background-color: transparent;
-            width: 250px;
-            height: 300px;
+            width: min(90vw, 250px);
+            height: auto;
             perspective: 1000px;
         }
 
         .flip-card-inner {
             position: relative;
             width: 100%;
-            height: 100%;
+            min-height: 280px;
             text-align: center;
             transition: transform 0.6s;
             transform-style: preserve-3d;
@@ -91,9 +102,16 @@
 
         .flip-card-back p {
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
             margin: 0;
             padding: 0 5px;
+        }
+        @media (max-width: 760px) {
+            body { padding: 16px; gap: 14px; justify-content: flex-start; }
+            .back-link { top: 12px; left: 12px; padding: 10px 14px; }
+            .flip-card { width: 100%; max-width: 320px; }
+            .flip-card-inner { min-height: 260px; }
+            .flip-card-back img { height: 130px; }
         }
     </style>
 </head>
